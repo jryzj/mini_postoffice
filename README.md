@@ -19,27 +19,26 @@ chardet is the only extend module, which is to recognize the encoding of file.
 
 ***class MiniMail(self, from_ = '', to = '', subject ='', gid = 'aipython', prefix = 'mmail')***
 
-Initialize instance
-***from, to, subject*** :   refer to RFC822, https://tools.ietf.org/html/rfc822.html#section-4.5, which are mini 	 									requirement for email
- ***gid*** : as part identification for content-id in email
- ***mmail***: used in html template, as format id
+Initialize instance  
+***from, to, subject*** :   refer to RFC822, https://tools.ietf.org/html/rfc822.html#section-4.5, which are mini requirement for email
+ ***gid*** : as part identification for content-id in email  
+ ***mmail***: used in html template, as format id  
 
 
 
 ***MiniMail.add_text(self, content, encoding = 'utf-8')***
 
-Add plain text content in email
-***content*** : string, plain text content
-***encoding*** : string, charset of content
+Add plain text content in email  
+***content*** : string, plain text content  
+***encoding*** : string, charset of content   
 
 
 
 ***MiniMail.add_html(self, html, cid_list = [], body = None)***
 
-Add html to email or an instance of EmailMessage
-***html*** : string, the html content
-***cid_list*** : list, resrouce list for html, which made by make_cid_list(), in which are objects with the keys of 
-                attachment, maintype, subtype, cid, filename, encoding.
+Add html to email or an instance of EmailMessage  
+***html*** : string, the html content  
+***cid_list*** : list, resrouce list for html, which made by make_cid_list(), in which are objects with the keys of attachment, maintype, subtype, cid, filename, encoding.  
 ***body*** : can be EmailMessage, or payload of email
 
 
