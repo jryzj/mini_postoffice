@@ -22,16 +22,22 @@ class MiniMail():
         if cid_list:
             body = self._mail.get_payload()
             for l in cid_list:
-                body[-1].add_related(l['attachment'], l['maintype'], l['subtype'], cid = l['cid'])
+                print(__name__, '==', l['maintype']) 
+                if l['maintype'] in ['audio', 'video', 'image']:
+                    body[-1].add_related(l['attachment'], l['maintype'], l['subtype'], cid = l['cid'])
+                elif l['maintype'] == 'text':
+                    body[-1].add_attachment(l['attachment'], subtype = l['subtype'], charset = l['encoding'], \
+                                            cid = l['cid'], filename = l['filename'] )
+                else:
+                    body[-1].add_attachment(l['attachment'], maintype = l['maintype'], subtype = l['subtype'], \
+                                            filename = l['filename'])
     
     def add_html_auto(self, html, src_list):
         cid_list = self.make_cid_list(src_list)
         fmt = dict()
         for l in range(len(cid_list)):
             fmt[self._prefix + str(l)] = cid_list[l]['cid']
-        print(fmt)
         html = html.format(**fmt)
-        print(html)
         self.add_html(html, cid_list)        
         
     def get_encoding(self, b):
@@ -42,7 +48,8 @@ class MiniMail():
             return 'binary'
 
     def get_MEMF(self, file):
-        mtype = mimetypes.guess_type(file)[0].split('/')
+        mtype = mimetypes.guess_type(file, strict = False)[0].split('/')
+        print(mtype)
         encoding = self.get_file_encoding(file)
         mode = 'r' + ('b' if encoding == 'binary' else '')
         encoding = encoding if encoding != 'binary' else None
@@ -55,10 +62,13 @@ class MiniMail():
         return encoding
     
     def add_attachment(self, files):
-        for file in files:
-            mtype, encoding, mode, filename = self.get_MEMF(file)
-            with open(file, mode, encoding = encoding) as f:
-                self._mail.add_attachment(f.read(), maintype = mtype[0], subtype = mtype[1], filename = filename) 
+        cid_list = self.make_cid_list(files)
+        for l in cid_list:
+            self._mail.add_attachment(l['attachment'], maintype = l['maintype'], subtype = l['subtype'], \
+                                            filename = l['filename']) 
+    def add_email(self, mail):
+        self._mail.add_attachment(mail)
+    
     
     def make_cid_list(self, files):
         cid_list = []
@@ -66,7 +76,8 @@ class MiniMail():
             mtype, encoding, mode, filename = self.get_MEMF(file)
             with open(file, mode, encoding = encoding) as f:
                 fdata = f.read()
-            cid_list.append({'attachment': fdata, 'maintype': mtype[0], 'subtype': mtype[1], 'cid': make_msgid(domain = self._gid)[1:-1]})
+            cid_list.append({'attachment': fdata, 'maintype' : mtype[0], 'subtype' : mtype[1], \
+                             'cid': make_msgid(domain = self._gid)[1:-1], 'filename' : filename, 'encoding' : encoding})
         return cid_list
     
     
