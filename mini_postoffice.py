@@ -148,7 +148,7 @@ class MiniMail():
     
     def set_property(self, property_, value):
         '''
-        general method to assgin value to inner properties
+        general method to assign value to inner properties
         property_ : string, name of property
         value : all kind of types
         '''
@@ -283,7 +283,7 @@ class MiniPostMan:
     
     def set_property(self, property_, value):
         '''
-        general method to assgin value to inner properties
+        general method to assign value to inner properties
         property_ : string, name of property
         value : all kind of types
         '''
