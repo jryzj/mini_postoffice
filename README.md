@@ -5,7 +5,7 @@ python module,  easy way to send email.
 
 
 
-### Class. MiniMail
+### Class.MiniMail
 
 MiniMail is class to create a mail body, is an inherit class from email.message.EmailMessage, which can be sent by smtplib of python, or the class MiniPostMan afterward.  
 chardet is the only extend module, which is to recognize the encoding of file.    
