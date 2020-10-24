@@ -4,7 +4,6 @@ python module,  easy way to send email.
 
 
 
-
 ### Class.MiniMail
 
 MiniMail is class to create a mail body, is an inherit class from email.message.EmailMessage, which can be sent by smtplib of python, or the class MiniPostMan afterward.  
@@ -202,4 +201,16 @@ tmail.add_attachment(['image.jpg', 'excel.xlsx']) #add other attachment, optiona
 
 amail.send_mail(tmail.get_mail()) #send mail
 ```
+
+---
+
+### Reference:
+
+[email](https://docs.python.org/3.6/library/email.html#module-email) — An email and MIME handling package of Python
+
+[smtplib](https://docs.python.org/3.6/library/smtplib.html#module-smtplib) — SMTP protocol client of Python
+
+[chardet](https://pypi.org/project/chardet/)  — chardet 3.0.4
+
+[RFC5322](https://tools.ietf.org/html/rfc5322.html), [RFC2821](https://tools.ietf.org/html/rfc2821.html), [RFC822](https://tools.ietf.org/html/rfc822), [RFC6532](https://tools.ietf.org/html/rfc6532.html), [RFC6657](https://tools.ietf.org/html/rfc6657), [RFC2046](https://tools.ietf.org/html/rfc2046), [FRC5233](https://tools.ietf.org/html/rfc5233.html), [RFC2048](https://tools.ietf.org/html/rfc2048.html)
 
