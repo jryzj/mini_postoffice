@@ -11,34 +11,21 @@ python module,  easy way to send email.
 #### MiniMail
 
 MiniMail is class to create a mail body, is an inherit class from email.message.EmailMessage, which can be sent by smtplib of python, or the class MiniPostMan afterward.  
-chardet is the only extend module, which is to recognize the encoding of file.
-
-
-
-
+chardet is the only extend module, which is to recognize the encoding of file.  
 
 ##### Method
 
 ***class MiniMail(self, from_ = '', to = '', subject ='', gid = 'aipython', prefix = 'mmail')***  
-
 Initialize instance  
 ***from, to, subject*** :   refer to [RFC822](https://tools.ietf.org/html/rfc822.html#section-4.5 "RFC822"), which are mini requirement for email  
 ***gid*** : as part identification for content-id in email  
 ***mmail*** : used in html template, as format id  
 
 
-
-
-
 ***MiniMail.add_text(self, content, encoding = 'utf-8')***  
-
 Add plain text content in email  
 ***content*** : string, plain text content  
 ***encoding*** : string, charset of content   
-
-
-
-
 
 ***MiniMail.add_html(self, html, cid_list = [], body = None)***
 
