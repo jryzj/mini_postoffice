@@ -227,7 +227,7 @@ amail.send_mail(tmail.get_mail()) #send mail
 
 ------
 
-### Reference:
+### Reference
 
 [email](https://docs.python.org/3.6/library/email.html#module-email) — An email and MIME handling package of Python
 
