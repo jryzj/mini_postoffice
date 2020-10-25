@@ -174,7 +174,7 @@ General method to assign value to inner properties
 
 ### Example
 
-```
+```python
 from mini_postoffice import MiniPostMan
 from mini_postoffice import MiniMail
 
@@ -198,8 +198,8 @@ h = '''
   <body>
     <h3>mini_postoffice</h3>
     <p>a email module, coded in python.</p>
-    <img src = 'cid:{mmail_0}'>
     <img src = 'cid:{mmail_1}'>
+    <img src = 'cid:{mmail_0}'>
   </body>
 </html>
 '''
@@ -216,6 +216,10 @@ tmail.add_attachment(['image.jpg', 'excel.xlsx']) #add other attachment, optiona
 
 amail.send_mail(tmail.get_mail()) #send mail
 ```
+
+Be aware for the mapping when call ***add_html_auto***.  *{mmail_**1**}* will be replaced by '*image1.png*', beacuse the index of '*image1.png*' in cid_list is **1**, *{mmail_**0**}* will be replaced by '*image.jpg*',  because the index is **0** in cid_list.
+
+
 
 ---
 
