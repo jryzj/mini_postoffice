@@ -219,6 +219,14 @@ amail.send_mail(tmail.get_mail()) #send mail
 
 ---
 
+### Illustration of email
+
+![illustration of Email constructionconstruction](E:\jupyter_notebook\sendemail\未命名绘图.png)
+
+
+
+------
+
 ### Reference:
 
 [email](https://docs.python.org/3.6/library/email.html#module-email) — An email and MIME handling package of Python
@@ -233,5 +241,9 @@ amail.send_mail(tmail.get_mail()) #send mail
 
 [RFC4021](https://tools.ietf.org/html/rfc4021#section-2.1.2) — Registration of Mail and MIME Header Fields
 
-[RFC5322](https://tools.ietf.org/html/rfc5322.html), [RFC2821](https://tools.ietf.org/html/rfc2821.html), [RFC822](https://tools.ietf.org/html/rfc822), [RFC6532](https://tools.ietf.org/html/rfc6532.html), [RFC6657](https://tools.ietf.org/html/rfc6657), [RFC2046](https://tools.ietf.org/html/rfc2046), [RFC5233](https://tools.ietf.org/html/rfc5233.html), [RFC2048](https://tools.ietf.org/html/rfc2048.html)
+[RFC2045](https://tools.ietf.org/html/rfc2045), [RFC2046](https://tools.ietf.org/html/rfc2046), [RFC2047](https://tools.ietf.org/html/rfc2047), [RFC2048](https://tools.ietf.org/html/rfc2048) — Multipurpose Internet Mail Extensions, Part one to Part four
+
+[RFC5322](https://tools.ietf.org/html/rfc5322.html) — Internet Message Format
+
+[RFC2821](https://tools.ietf.org/html/rfc2821.html), [RFC6532](https://tools.ietf.org/html/rfc6532.html), [RFC6657](https://tools.ietf.org/html/rfc6657), [RFC5233](https://tools.ietf.org/html/rfc5233.html)
 
