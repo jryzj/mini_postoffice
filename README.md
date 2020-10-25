@@ -15,7 +15,7 @@ chardet is the only extend module, which is to recognize the encoding of file.
 
 ***class MiniMail(self, from_ = '', to = '', subject ='', gid = 'aipython', prefix = 'mmail')***  
 Initialize instance  
-***from, to, subject*** :   refer to [RFC822](https://tools.ietf.org/html/rfc822.html#section-4.5 "RFC822"), which are mini requirement for email  
+***from, to, subject*** :   refer to [RFC822](https://tools.ietf.org/html/rfc822.html#section-4.5 "RFC822"), which are mini requirement for email fields  
 ***gid*** : as part identification for content-id in email  
 ***mmail*** : used in html template, as format id  
 
@@ -157,6 +157,21 @@ General method to assign value to inner properties
 
 ---
 
+### Usage
+
+1. Creating instance of email, calls MiniMail.
+2. Setting fields necessayly, such as 'From', ‘To', calls MiniMail.set_property.
+3. Adding contents into the email instance, calls MiniMail.add_text, MiniMail.add_html_auto, MiniMail.add_attachment, MiniMail.add_email, according to perposes.
+4. Creating instance of MiniPostman.
+5. Setting URL and credential of email server, calls MiniPostman.set_property.
+6.  Sending mail,  calls MiniPostman.send_mail with the email content getting by calling MiniMail.get_mail.
+
+
+
+------
+
+
+
 ### Example
 
 ```
@@ -212,5 +227,11 @@ amail.send_mail(tmail.get_mail()) #send mail
 
 [chardet](https://pypi.org/project/chardet/)  — chardet 3.0.4
 
-[RFC1521](https://tools.ietf.org/html/rfc1521), [RFC5322](https://tools.ietf.org/html/rfc5322.html), [RFC2821](https://tools.ietf.org/html/rfc2821.html), [RFC822](https://tools.ietf.org/html/rfc822), [RFC6532](https://tools.ietf.org/html/rfc6532.html), [RFC6657](https://tools.ietf.org/html/rfc6657), [RFC2046](https://tools.ietf.org/html/rfc2046), [RFC5233](https://tools.ietf.org/html/rfc5233.html), [RFC2048](https://tools.ietf.org/html/rfc2048.html)
+[RFC1521](https://tools.ietf.org/html/rfc1521) — multipart/alternative, multipart/mixed
+
+[RFC2112](https://tools.ietf.org/html/rfc2112) — multipart/related
+
+[RFC4021](https://tools.ietf.org/html/rfc4021#section-2.1.2) — Registration of Mail and MIME Header Fields
+
+[RFC5322](https://tools.ietf.org/html/rfc5322.html), [RFC2821](https://tools.ietf.org/html/rfc2821.html), [RFC822](https://tools.ietf.org/html/rfc822), [RFC6532](https://tools.ietf.org/html/rfc6532.html), [RFC6657](https://tools.ietf.org/html/rfc6657), [RFC2046](https://tools.ietf.org/html/rfc2046), [RFC5233](https://tools.ietf.org/html/rfc5233.html), [RFC2048](https://tools.ietf.org/html/rfc2048.html)
 
