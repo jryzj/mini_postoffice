@@ -221,7 +221,7 @@ amail.send_mail(tmail.get_mail()) #send mail
 
 ### Illustration of email
 
-![illustration of Email constructionconstruction](E:\jupyter_notebook\sendemail\未命名绘图.png)
+![illustration of Email constructionconstruction](https://github.com/jryzj/mini_postoffice/blob/master/illustration%20of%20email%20construction.png?raw=true)
 
 
 
