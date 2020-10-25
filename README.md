@@ -239,6 +239,8 @@ Be aware for the mapping when call ***add_html_auto***.  *{mmail_**1**}* will be
 
 [chardet](https://pypi.org/project/chardet/)  — chardet 3.0.4
 
+[MIME](https://en.wikipedia.org/wiki/MIME) — from wikipedia
+
 [RFC1521](https://tools.ietf.org/html/rfc1521) — multipart/alternative, multipart/mixed
 
 [RFC2112](https://tools.ietf.org/html/rfc2112) — multipart/related
@@ -246,6 +248,8 @@ Be aware for the mapping when call ***add_html_auto***.  *{mmail_**1**}* will be
 [RFC4021](https://tools.ietf.org/html/rfc4021#section-2.1.2) — Registration of Mail and MIME Header Fields
 
 [RFC2045](https://tools.ietf.org/html/rfc2045), [RFC2046](https://tools.ietf.org/html/rfc2046), [RFC2047](https://tools.ietf.org/html/rfc2047), [RFC2048](https://tools.ietf.org/html/rfc2048) — Multipurpose Internet Mail Extensions, Part one to Part four
+
+[RFC5321](https://tools.ietf.org/html/rfc5321) — Simple Mail Transfer Protocol
 
 [RFC5322](https://tools.ietf.org/html/rfc5322.html) — Internet Message Format
 
