@@ -225,7 +225,7 @@ Be aware for the mapping when call ***add_html_auto***.  *{mmail_**1**}* will be
 
 ### Illustration of email
 
-![illustration of Email constructionconstruction](https://github.com/jryzj/mini_postoffice/blob/master/illustration%20of%20email%20construction.png?raw=true)
+![illustration of Email structure](https://github.com/jryzj/mini_postoffice/blob/master/illustration%20of%20email%20structure.png?raw=true)
 
 
 
