@@ -7,14 +7,17 @@ import chardet
 
 class MiniMail():
     '''
-    MiniMail is class to create a mail body, is an inherit class from email.message.EmailMessage,
+    MiniMail is class to create a mail body.
+    
+    MiniMail is an inherit class from email.message.EmailMessage,
     which can be sent by smtplib of python, or the class MiniPostMan afterward.
     chardet is the only extend module, which is to recognize the encoding of file.
     '''    
     
     def __init__(self, from_ = '', to = '', subject ='', gid = 'aipython', prefix = 'mmail'):
         '''
-        to initialize instance
+        To initialize instance.
+        
         from, to, subject :   refer to RFC822, https://tools.ietf.org/html/rfc822.html#section-4.5, which are mini requirement for email
         gid : as part identification for content-id in email
         mmail : used in html template, as format id.
@@ -28,7 +31,8 @@ class MiniMail():
     
     def add_text(self, content, encoding = 'utf-8'):
         '''
-        add plain text content in email
+        Add plain text content in email.
+        
         content : string, plain text content
         encoding : string, charset of content
         '''
@@ -37,7 +41,8 @@ class MiniMail():
         
     def add_html(self, html, cid_list = [], body = None):
         '''
-        add html to email or an instance of EmailMessage
+        Add html to email or an instance of EmailMessage.
+        
         html : string, the html content
         cid_list : list, resrouce list for html, which made by make_cid_list(), in which are objects with the keys of 
                 attachment, maintype, subtype, cid, filename, encoding.
@@ -60,7 +65,8 @@ class MiniMail():
     
     def add_html_auto(self, html, src_list, body = None):
         '''
-        a easy way to call add_html()
+        An easy way to call add_html().
+        
         html : string, the html template, in which the refer will like mmail_0, mmail is self._prefix, 0 is the index of fmt list,
             e.g. fmt = {'mmail_0' : 'abc', 'mmail_1' : 'def'}, then after html formating, 
             mmail_0 will be replaced by abc, mmail_1 will be replaced by def.
@@ -77,7 +83,8 @@ class MiniMail():
         
     def get_encoding(self, b):
         '''
-        get the content encoding, using module chardet to detect
+        Get the content encoding, using module chardet to detect.
+        
         b : byte, the content of file
         '''
         encoding = chardet.detect(b)
@@ -88,7 +95,8 @@ class MiniMail():
 
     def get_MEMF(self, file):
         '''
-        get mimetype, encoding, opening mode, filename of filepath
+        Get mimetype, encoding, opening mode, filename of filepath.
+        
         file : string, file path
         '''
         mtype = mimetypes.guess_type(file, strict = False)[0].split('/')
@@ -100,7 +108,8 @@ class MiniMail():
 
     def get_file_encoding(self, file):
         '''
-        get encoding of file
+        Get encoding of file.
+        
         file : string, file path
         '''
         with open(file, 'rb') as f:
@@ -109,7 +118,8 @@ class MiniMail():
     
     def add_attachment(self, files, body = None):
         '''
-        add files as attachment into email or an instance of EmailMessage
+        Add files as attachment into email or an instance of EmailMessage.
+        
         files : list, files to attach
         body : email.message, can be an instance of EmailMessage, or payload of email
         '''
@@ -125,7 +135,8 @@ class MiniMail():
 
     def add_email(self, mail, body = None):
         '''
-        add mail as attachment into email or an instance of EmailMessage
+        Add mail as attachment into email or an instance of EmailMessage.
+        
         mail : email.message or .eml, email to attach
         '''
         body = self._mail if body == None else body
@@ -133,7 +144,9 @@ class MiniMail():
     
     def make_cid_list(self, files):
         '''
-        prepare files data for other methods, data have bytes of file, maintype, subtype, cid, filename, encoding
+        Prepare files data for other methods.
+        
+        File data have bytes of file, maintype, subtype, cid, filename, encoding.        
         files : list
         '''
         cid_list = []
@@ -148,7 +161,8 @@ class MiniMail():
     
     def set_property(self, property_, value):
         '''
-        general method to assign value to inner properties
+        General method to assign value to inner properties.
+        
         property_ : string, name of property
         value : all kind of types
         '''
@@ -157,14 +171,15 @@ class MiniMail():
         
     def get_property(self, property_):
         '''
-        general method to get value of inner properties
+        General method to get value of inner properties.
+        
         property_ : string, name of property 
         '''
         return self.__dict__['_' + property_]
     
     def get_addresses(self):
         '''
-        get all email addresses in email
+        Get all email addresses in email.
         '''
         tos = self._mail.get_all('to', [])
         ccs = self._mail.get_all('cc', [])
@@ -177,7 +192,7 @@ class MiniMail():
     
     def get_mail(self):
         '''
-        get total email body
+        Get total email body.
         '''
         self._mail['From'] = self._from
         self._mail['To'] = self._to
@@ -197,7 +212,8 @@ class MiniPostMan:
     
     def __init__(self, host='', useremail='', pwd=''):
         '''
-        initialization of class, setting required properties
+        initialization of class, setting required properties.
+        
         host : string, the smtp server url
         usermail : string, account to login host, email address of sender is ok
         pwd ： password of login
@@ -208,7 +224,8 @@ class MiniPostMan:
     
     def email_valid(self, addresses):
         '''
-        to validate email address
+        To validate email address。
+        
         addresses : list, with email addresses
         '''
         patten = pattern = r'^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$' #reg patten
@@ -225,7 +242,8 @@ class MiniPostMan:
     
     def quick_send(self, receiver, subject='hello', content=''):
         '''
-        lite method to send a text email
+        Lite method to send a text email.
+        
         receiver : string, email address of receiver
         subject : string, subject of email
         content : string, message
@@ -248,7 +266,8 @@ class MiniPostMan:
     
     def get_addresses(self, mail):
         '''
-        get all addresses in mail
+        Get all addresses in mail.
+        
         mail : email.message, an instance of email.messages
         '''
         tos = mail.get_all('to', [])
@@ -262,7 +281,8 @@ class MiniPostMan:
     
     def send_mail(self, mail, method = 'smtp'):
         '''
-        send email
+        Send email.
+        
         mail : email.message, an instance of email.messages
         method : string, send method, smtp or ssl
         '''
@@ -283,7 +303,8 @@ class MiniPostMan:
     
     def set_property(self, property_, value):
         '''
-        general method to assign value to inner properties
+        General method to assign value to inner properties.
+        
         property_ : string, name of property
         value : all kind of types
         '''
