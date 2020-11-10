@@ -28,6 +28,8 @@ class MiniMail():
         self._subject = subject
         self._gid = gid
         self._prefix = prefix + '_'
+        self._encode_confidence = 0.5
+        self._embedded = ['audio', 'video', 'image']
     
     def add_text(self, content, encoding = 'utf-8'):
         '''
@@ -39,31 +41,34 @@ class MiniMail():
         self._mail.set_content(content, charset = encoding)
         
         
-    def add_html(self, html, cid_list = [], body = None):
+    def add_html(self, html, cids, body = None):
         '''
         Add html to email or an instance of EmailMessage.
         
         html : string, the html content
-        cid_list : list, resrouce list for html, which made by make_cid_list(), in which are objects with the keys of 
+        cids : list or dict, resrouces for html, which made by make_cid_list() or make_cid_dict(), in which are objects with the keys of 
                 attachment, maintype, subtype, cid, filename, encoding.
         body : can be EmailMessage, or payload of email
         '''
-        body = self._mail if body == None else body
+        if body == None :
+            body = self._mail
         body.add_alternative(html, subtype = 'html') #add_alternative is method of EmailMessage
-        if cid_list:
-            payload = body.get_payload() #legcy method of EmailMessage, to obtain content of email
-            for l in cid_list:
-                #different MIME maintye need different parameters
-                if l['maintype'] in ['audio', 'video', 'image']: #audio, video, image are inline cotent of html
-                    payload[-1].add_related(l['attachment'], l['maintype'], l['subtype'], cid = l['cid'])
-                elif l['maintype'] == 'text':  #for plain text content
-                    payload[-1].add_attachment(l['attachment'], subtype = l['subtype'], charset = l['encoding'], \
-                                            cid = l['cid'], filename = l['filename'] )
-                else:  #for binary content and others which are not standard MIME type
-                    payload[-1].add_attachment(l['attachment'], maintype = l['maintype'], subtype = l['subtype'], \
-                                            filename = l['filename'])
+        payload = body.get_payload() #legcy method of EmailMessage, to obtain content of email
+        cid_list = self.sorting_cids(cids)
+        for l in cid_list:
+            #different MIME maintye need different parameters
+            if l['maintype'] in self._embedded: #audio, video, image are inline cotent of html
+                payload[-1].add_related(l['attachment'], l['maintype'], l['subtype'], cid = l['cid'])
+            elif l['maintype'] == 'text':  #for plain text content
+                payload[-1].add_attachment(l['attachment'], subtype = l['subtype'], \
+                                           charset = l['encoding'] if l['encoding'] != None else 'utf-8', \
+                                        cid = l['cid'], filename = l['filename'] )
+            else:  #for binary content and others which are not standard MIME type
+                payload[-1].add_attachment(l['attachment'], maintype = l['maintype'], subtype = l['subtype'], \
+                                        filename = l['filename'])
+
     
-    def add_html_auto(self, html, src_list, body = None):
+    def add_html_auto(self, html, sources, body = None):
         '''
         An easy way to call add_html().
         
@@ -72,14 +77,19 @@ class MiniMail():
             mmail_0 will be replaced by abc, mmail_1 will be replaced by def.
         src_list : list, resoruce path of files which will be refered in html
         body : email.message, can be an instance of EmailMessage, or payload of email
-        '''
-        body = self._mail if body == None else body
-        cid_list = self.make_cid_list(src_list)  #prepare contents data
+        '''        
         fmt = {}
-        for l in range(len(cid_list)):
-            fmt[self._prefix + str(l)] = cid_list[l]['cid']  #prepare the refer pair in html. e.g. 'mmail_0' : 'abc'
+        if type(sources) == list:
+            cids = self.make_cid_list(sources)  #prepare contents data
+            for l in range(len(cids)):
+                fmt[self._prefix + str(l)] = cids[l]['cid']  #prepare the refer pair in html. e.g. 'mmail_0' : 'abc'
+        elif type(sources) == dict:
+            cids = self.make_cid_dict(sources)
+            for k, l in cids.items():
+                fmt[k] = l['cid']
+            
         html = html.format(**fmt)  #format, using dict data
-        self.add_html(html, cid_list)        
+        self.add_html(html, cids, body)        
         
     def get_encoding(self, b):
         '''
@@ -88,7 +98,7 @@ class MiniMail():
         b : byte, the content of file
         '''
         encoding = chardet.detect(b)
-        if float(encoding['confidence']) > 0.9:
+        if float(encoding['confidence']) > self._encode_confidence:
             return encoding['encoding']
         else:
             return 'binary'   #if can not be recognized, tagging as binary
@@ -127,7 +137,8 @@ class MiniMail():
         cid_list = self.make_cid_list(files)
         for l in cid_list:
             if l['maintype'] == 'text':  #for plain text content
-                    body.add_attachment(l['attachment'], subtype = l['subtype'], charset = l['encoding'], \
+                    body.add_attachment(l['attachment'], subtype = l['subtype'],\
+                                        charset = l['encoding'] if l['encoding'] != None else 'utf-8', \
                                             cid = l['cid'], filename = l['filename'] )
             else:  #for binary content and others which are not standard MIME type
                     body.add_attachment(l['attachment'], maintype = l['maintype'], subtype = l['subtype'], \
@@ -144,7 +155,7 @@ class MiniMail():
     
     def make_cid_list(self, files):
         '''
-        Prepare files data for other methods.
+        Prepare files data for cid.
         
         File data have bytes of file, maintype, subtype, cid, filename, encoding.        
         files : list
@@ -154,10 +165,53 @@ class MiniMail():
             mtype, encoding, mode, filename = self.get_MEMF(file)
             with open(file, mode, encoding = encoding) as f:
                 fdata = f.read()
-            cid_list.append({'attachment': fdata, 'maintype' : mtype[0], 'subtype' : mtype[1], \
+                cid_list.append({'attachment': fdata, 'maintype' : mtype[0], 'subtype' : mtype[1], \
                              'cid': make_msgid(domain = self._gid)[1:-1], 'filename' : filename, 'encoding' : encoding})
         return cid_list
     
+    
+    def make_cid_dict(self, files):
+        '''
+        Prepare files data for cid.
+        
+        File data have bytes of file, maintype, subtype, cid, filename, encoding.        
+        files : dict
+        '''
+        cid_dict = {}
+        for key, file in files.items():
+            mtype, encoding, mode, filename = self.get_MEMF(file)
+            with open(file, mode, encoding = encoding) as f:
+                fdata = f.read()
+                cid_dict[key] = {'attachment': fdata, 'maintype': mtype[0], 'subtype': mtype[1],\
+                              'cid': make_msgid(domain = self._gid)[1:-1], 'filename' : filename, 'encoding' : encoding}
+        return cid_dict 
+    
+    
+    def sorting_cids(self, cids):
+        '''
+        Soring cids, to make self._embedded type at first in cids, after that other type.
+        
+        cids : data set from cid_list() or cid_dict()
+        '''
+        cid_list1 = [] #to store self._embedded types
+        cid_list2 = [] #to store other types
+        if type(cids) == list:  #cids is list
+            for l in cids:
+                #different MIME maintye need different parameters
+                if l['maintype'] in self._embedded: #audio, video, image are inline cotent of html
+                    cid_list1.append(l)
+                else:
+                    cid_list2.append(l)
+                
+        elif type(cids) == dict:  #cids is dictionary
+            for _, l in cids.items():
+                if l['maintype'] in self._embedded: #audio, video, image are inline cotent of html
+                    cid_list1.append(l)
+                else:
+                    cid_list2.append(l)
+        
+        return cid_list1 + cid_list2  #combines to one list
+       
     
     def set_property(self, property_, value):
         '''

@@ -28,18 +28,18 @@ Add plain text content in email
 
 
 
-***MiniMail.add_html(self, html, cid_list = [], body = None)***  
+***MiniMail.add_html(self, html, cids, body = None)***  
 Add html to email or an instance of EmailMessage   
 ***html*** : string, the html content  
-***cid_list*** : list, resrouce list for html, which made by make_cid_list(), in which are objects with the keys of attachment, maintype, subtype, cid, filename, encoding.  
+***cids*** : list or dictionary, resources for html, which made by make_cid_list() or make_cid_dict(), in which are objects with the keys of attachment, maintype, subtype, cid, filename, encoding.  
 ***body*** : can be EmailMessage, or payload of email  
 
 
 
-***MiniMail.add_html_auto(self, html, src_list, body = None)***  
+***MiniMail.add_html_auto(self, html, sources, body = None)***  
 Easy way to call MiniMail.add_html()  
 ***html*** : string, the html template, in which the refer will like mmail_0, mmail is self._prefix, 0 is the index of 			fmt list, e.g. fmt = {'mmail_0' : 'abc', 'mmail_1' : 'def'}, then after html formating, mmail_0 will be 			replaced by abc, mmail_1 will be replaced by def.  
-***src_list*** : list, resoruce path of files which will be refered in html  
+***sources*** : list or dictionary,  path of resource files which will be referenced in html.  
 ***body*** : email.message, can be an instance of EmailMessage, or payload of email  
 
 
@@ -51,7 +51,7 @@ Get the content encoding, using module chardet to detect
 
 
 ***MiniMail.get_MEMF(self, file)***  
-Get mimetype, encoding, opening mode, filename of filepath  
+Get mimetype, encoding, opening mode, filename of file path  
  ***file*** : string, file path  
 
 
@@ -77,7 +77,22 @@ Add mail as attachment into email or an instance of EmailMessage
 
 ***MiniMail.make_cid_list(self, files)***  
 Prepare files data for other methods, data have bytes of file, maintype, subtype, cid, filename, encoding  
-***files*** : list,  list of filepath  
+***files*** : list,  list of file path  
+***return*** : list  
+
+
+
+***MiniMail.make_cid_dict(self, files)***  
+Prepare files data for other methods, data have bytes of file, maintype, subtype, cid, filename, encoding  
+***files*** : list,  list of file path  
+***return*** : dictionary
+
+
+
+***MiniMail.sorting_cids(self, cids)***  
+Soring cids, to make self._embedded type at first in cids, after that other type.  
+***cids*** : list,  or dictionary, data set from cid_list() or cid_dict()
+***return*** : list
 
 
 
