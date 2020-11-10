@@ -47,18 +47,21 @@ Easy way to call MiniMail.add_html()
 ***MiniMail.get_encoding(self, b)***  
 Get the content encoding, using module chardet to detect  
 ***b*** : byte, the content of file  
+***return*** : string, name of encoding
 
 
 
 ***MiniMail.get_MEMF(self, file)***  
 Get mimetype, encoding, opening mode, filename of file path  
  ***file*** : string, file path  
+***return*** : tuple of string, with minetype, encoding, mode, filename
 
 
 
 ***MiniMail.get_file_encoding(self, file)***  
 Get encoding of file  
  ***file*** : string, file path  
+***return*** : string, name of encoding
 
 
 
@@ -78,14 +81,14 @@ Add mail as attachment into email or an instance of EmailMessage
 ***MiniMail.make_cid_list(self, files)***  
 Prepare files data for other methods, data have bytes of file, maintype, subtype, cid, filename, encoding  
 ***files*** : list,  list of file path  
-***return*** : list  
+***return*** : list, of cid objects
 
 
 
 ***MiniMail.make_cid_dict(self, files)***  
 Prepare files data for other methods, data have bytes of file, maintype, subtype, cid, filename, encoding  
 ***files*** : list,  list of file path  
-***return*** : dictionary
+***return*** : dictionary, of cid objects
 
 
 
@@ -105,17 +108,20 @@ General method to assign value to inner properties
 
 ***MiniMail.get_property(self, property_)***  
 General method to get value of inner properties  
-***property\_ ***: string, name of property   
+***property\_*** : string, name of property  
+***return*** : value of property
 
 
 
 ***MiniMail.get_addresses(self)***  
 Get all email addresses in email  
+***return*** : list, of all addresses
 
 
 
 ***MiniMail.get_mail(self)***  
 Get total email body  
+***return*** : EmailMessage, email body
 
 
 
@@ -138,7 +144,8 @@ Initialization of class, setting required properties
 
 ***MiniPostMan.email_valid(self, addresses)***  
 Validate email address  
-***addresses*** : list, with email addresses  
+***addresses*** : list, with email addresses   
+***return*** : boolean
 
 
 
@@ -153,6 +160,7 @@ Lite method to send a text email
 ***MiniPostMan.get_addresses(self, mail)***  
 Get all addresses in mail  
 ***mail*** : email.message, an instance of email.messages  
+***return*** : list, of all addresses
 
 
 
@@ -175,7 +183,7 @@ General method to assign value to inner properties
 ### Usage
 
 1. Creating instance of email, calls MiniMail.
-2. Setting fields necessayly, such as 'From', ‘To', calls MiniMail.set_property.
+2. Setting fields necessarily, such as 'From', ‘To', calls MiniMail.set_property.
 3. Adding contents into the email instance, calls MiniMail.add_text, MiniMail.add_html_auto, MiniMail.add_attachment, MiniMail.add_email, according to perposes.
 4. Creating instance of MiniPostman.
 5. Setting URL and credential of email server, calls MiniPostman.set_property.
