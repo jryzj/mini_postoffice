@@ -134,11 +134,12 @@ MiniPostMan fulfills lite function to send email, of which inner core is stmplib
 
 #### Method
 
-***class MiniPostMan(self, host='', useremail='', pwd='')***  
+***class MiniPostMan(self, host='', useremail='', pwd=''，debuglevel = 0)***  
 Initialization of class, setting required properties  
 ***host*** : string, the smtp server url  
 ***usermail*** : string, account to login host, email address of sender is ok  
 ***pwd*** ： password of login  
+***debuglevel*** ：set the debug output level
 
 
 

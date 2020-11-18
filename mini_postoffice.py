@@ -54,7 +54,7 @@ class MiniMail():
             body = self._mail
         body.add_alternative(html, subtype = 'html') #add_alternative is method of EmailMessage
         payload = body.get_payload() #legcy method of EmailMessage, to obtain content of email
-        cid_list = self.sorting_cids(cids)
+        cid_list = self.sorting_cids(cids) if cids else []
         for l in cid_list:
             #different MIME maintye need different parameters
             if l['maintype'] in self._embedded: #audio, video, image are inline cotent of html
@@ -68,7 +68,7 @@ class MiniMail():
                                         filename = l['filename'])
 
     
-    def add_html_auto(self, html, sources, body = None):
+    def add_html_auto(self, html, sources = None, body = None):
         '''
         An easy way to call add_html().
         
@@ -79,6 +79,7 @@ class MiniMail():
         body : email.message, can be an instance of EmailMessage, or payload of email
         '''        
         fmt = {}
+        cids = None
         if type(sources) == list:
             cids = self.make_cid_list(sources)  #prepare contents data
             for l in range(len(cids)):
@@ -88,7 +89,8 @@ class MiniMail():
             for k, l in cids.items():
                 fmt[k] = l['cid']
             
-        html = html.format(**fmt)  #format, using dict data
+        if fmt:
+            html = html.format(**fmt)  #format, using dict data
         self.add_html(html, cids, body)        
         
     def get_encoding(self, b):
@@ -264,17 +266,19 @@ class MiniPostMan:
     MiniPostMan fulfills lite function to send email, of which inner core is stmplib, standard module of python.
     '''
     
-    def __init__(self, host='', useremail='', pwd=''):
+    def __init__(self, host='', useremail='', pwd='', debuglevel = 0):
         '''
         initialization of class, setting required properties.
         
         host : string, the smtp server url
         usermail : string, account to login host, email address of sender is ok
         pwd ： password of login
+        debuglevel : set the debug output level
         '''
         self._host = host
         self._user = useremail
         self._pwd = pwd
+        self._debuglevel = 0
     
     def email_valid(self, addresses):
         '''
@@ -310,13 +314,15 @@ class MiniPostMan:
             
             try:
                 smtpObj = smtplib.SMTP(self._host)
-                smtpObj.set_debuglevel(1)
+                smtpObj.set_debuglevel(self._debuglevel)
                 smtpObj.login(self._user, self._pwd)
                 smtpObj.sendmail(self._user, receiver, msg.as_string())                
                 print('sent email')
                 smtpObj.quit()
+                return Ture
             except smtplib.SMTPException as err:
-                print('failed:', err)       
+                print('failed:', err)
+                return False
     
     def get_addresses(self, mail):
         '''
@@ -347,12 +353,14 @@ class MiniPostMan:
                 else: #default smtp mothod
                     smtpObj = smtplib.SMTP(self._host)
                     
-                smtpObj.set_debuglevel(1)
+                smtpObj.set_debuglevel(self._debuglevel)
                 smtpObj.login(self._user, self._pwd)
                 smtpObj.send_message(mail)
                 smtpObj.quit()
+                return True
             except smtplib.SMTPException as err:
                 print('failed', err)
+                return False
 
     
     def set_property(self, property_, value):
