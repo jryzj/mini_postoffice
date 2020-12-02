@@ -1,3 +1,4 @@
+
 from email.message import EmailMessage
 import mimetypes
 from email.utils import getaddresses
@@ -250,10 +251,22 @@ class MiniMail():
         '''
         Get total email body.
         '''
+        if 'From' in self._mail.keys():
+            del self._mail['From']
+        
+        if 'To' in self._mail.keys():
+            del self._mail['To']
+
+        if 'Subject' in self._mail.keys():
+            del self._mail['Subject']
+            
+            
         self._mail['From'] = self._from
         self._mail['To'] = self._to
         self._mail['Subject'] = self._subject
+        
         return self._mail
+    
     
 
     
